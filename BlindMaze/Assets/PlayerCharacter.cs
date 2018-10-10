@@ -53,7 +53,7 @@ public class PlayerCharacter : MonoBehaviour {
         }
         if(gameTimeRemaining <= gameTime)
         {
-          //  timeGuage.transform.localScale = //(gameTimeRemaining / gameTime, 0, 0);
+            timeGuage.transform.localScale = new Vector3(gameTimeRemaining / gameTime, 1, 1);
         }
        
         if(gameTimeRemaining >= gameTime)
@@ -91,6 +91,9 @@ public class PlayerCharacter : MonoBehaviour {
         Bounceback();
     }
     
-
+    public float RemainingGT()
+    {
+        return gameTimeRemaining;
+    }
  
 }
