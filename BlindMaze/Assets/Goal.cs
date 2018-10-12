@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Goal : MonoBehaviour
 {
+    public PlayerCharacter PC;
     private AudioSource goal;
     private void Start()
     {
@@ -13,5 +14,6 @@ public class Goal : MonoBehaviour
     {
         print("Goal");
         goal.Play();
+        PC.FinalScore();
     }
 }

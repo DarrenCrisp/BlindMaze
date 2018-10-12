@@ -9,15 +9,21 @@ public class PlayerCharacter : MonoBehaviour {
     public float bounceTime = 0.25f;
     public float currentSpeed;
     private bool bouncing = false;
+    private bool perfect = true;
     private bool timeupPlayed=false;
     private float timer = 0f;
     private float gameTimeRemaining=0;
+    private float startScore = 100000;
+    private bool isFinished = false;
     private AudioSource hitWall;
     public AudioClip timeUp;
     public AudioClip[] oooohf;
     private AudioClip temp;
-
+    public AudioSource bGM;
+    public AudioClip victory;
+    public AudioClip loss;
     public Image timeGuage;
+    public Text score;
     //public AudioSource [] doop;
 
     private CharacterController PC;
@@ -28,12 +34,31 @@ public class PlayerCharacter : MonoBehaviour {
         hitWall = GetComponent<AudioSource>();
         currentSpeed = speed;
     }
-
+    public void FinalScore()//works out final score and ends game
+    {
+        bGM.clip = victory;
+        bGM.Play();
+        isFinished = true;
+        if (perfect)
+        {
+            startScore += 20000;
+        }
+    }
 
     void Update() {
+        if (!isFinished)//stops score depreciating after finishing
+        {
+            startScore -= 1000 * Time.deltaTime;
+            gameTimeRemaining += Time.deltaTime;
+        }
+
+        score.text = (startScore).ToString();
         if (!bouncing)
         {
-            PC.Move(transform.TransformDirection(Vector3.forward) * currentSpeed * Time.deltaTime);
+            if (!isFinished)
+            {
+                PC.Move(transform.TransformDirection(Vector3.forward) * currentSpeed * Time.deltaTime);
+            }
         }
         if (bouncing)
         {
@@ -45,7 +70,6 @@ public class PlayerCharacter : MonoBehaviour {
                 timer = 0f;
             }
         }
-        gameTimeRemaining += Time.deltaTime;
       //  print(gameTimeRemaining);
         if (gameTimeRemaining >= gameTime / 3)
         {
@@ -61,6 +85,9 @@ public class PlayerCharacter : MonoBehaviour {
             print("Game Over");
             if (timeupPlayed == false)
             {
+                isFinished = true;
+                bGM.clip = loss;
+                bGM.Play();
                 hitWall.clip = timeUp;
                 hitWall.loop = true;
                 hitWall.Play();
@@ -80,6 +107,8 @@ public class PlayerCharacter : MonoBehaviour {
     public void Bounceback()
     {
         bouncing = true;
+        perfect = false;
+        startScore -= 13231;
         int num = Random.Range(0, oooohf.Length);
         temp = oooohf[num];
         hitWall.clip = temp;
