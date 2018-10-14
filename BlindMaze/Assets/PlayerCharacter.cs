@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerCharacter : MonoBehaviour {
     public float gameTime = 90f;
@@ -24,6 +25,7 @@ public class PlayerCharacter : MonoBehaviour {
     public AudioClip loss;
     public Image timeGuage;
     public Text score;
+    public GameObject resetButtons;
     //public AudioSource [] doop;
 
     private CharacterController PC;
@@ -36,6 +38,7 @@ public class PlayerCharacter : MonoBehaviour {
     }
     public void FinalScore()//works out final score and ends game
     {
+        resetButtons.SetActive(true);
         bGM.clip = victory;
         bGM.Play();
         isFinished = true;
@@ -85,6 +88,7 @@ public class PlayerCharacter : MonoBehaviour {
             print("Game Over");
             if (timeupPlayed == false)
             {
+                resetButtons.SetActive(true);
                 isFinished = true;
                 bGM.clip = loss;
                 bGM.Play();
@@ -102,6 +106,16 @@ public class PlayerCharacter : MonoBehaviour {
     public void RotateLEFT()
     {
         PC.gameObject.transform.Rotate(0, -90, 0);
+    }
+
+    public void ResetScene()
+    {
+        SceneManager.LoadScene("SampleScene");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 
     public void Bounceback()
